@@ -6,15 +6,15 @@ function App() {
     <div className="outer">
       <div className="middle">
         <div className="inner">
-          <Clock/>
+          <Clock />
         </div>
       </div>
     </div>
   );
 }
 
-class Clock extends React.Component{
-  constructor(props){
+class Clock extends React.Component {
+  constructor(props) {
     super(props)
     this.state = {
       sessionLength: 25,
@@ -25,68 +25,69 @@ class Clock extends React.Component{
       secondsDummy: '00',
       onPlay: false,
       isReset: true,
-      onBreak: false 
+      onBreak: false
     }
     this.updateLength = this.updateLength.bind(this)
     this.timerSetting = this.timerSetting.bind(this)
     this.setTimeTemplate = this.setTimeTemplate.bind(this)
+    this.onReset = this.onReset.bind(this)
   }
 
-  setTimeTemplate(){
-    if(this.state.minutes < 10){
-      this.setState((state)=>({
+  setTimeTemplate() {
+    if (this.state.minutes < 10) {
+      this.setState((state) => ({
         minutesDummy: `0${state.minutes}`
       }))
     }
-    else{
-      this.setState((state)=>({
+    else {
+      this.setState((state) => ({
         minutesDummy: `${state.minutes}`
       }))
     }
-    if(this.state.seconds < 0){
-      this.setState((state)=>({
+    if (this.state.seconds < 10) {
+      this.setState((state) => ({
         secondsDummy: `0${state.seconds}`
       }))
     }
-    else{
-      this.setState((state)=>({
+    else {
+      this.setState((state) => ({
         secondsDummy: `${state.seconds}`
       }))
     }
   }
 
-  updateLength(id){
-    if(this.state.isReset){
-      switch(id){
+  updateLength(id) {
+    if (this.state.isReset) {
+      switch (id) {
         case 'break-increment':
-          if(this.state.breakLength<60){
+          if (this.state.breakLength < 60) {
             this.setState({ breakLength: this.state.breakLength + 1 })
           }
-          else{
+          else {
             //alert("Sorry, Break Length cannot be greater than sixty!")
           }
           break
         case 'break-decrement':
-          if(this.state.breakLength>1){
+          if (this.state.breakLength > 1) {
             this.setState({ breakLength: this.state.breakLength - 1 })
           }
-          else{
+          else {
             //alert("Sorry, Break Length cannot be zero!")
           }
           break
         case 'session-increment':
-          if(this.state.sessionLength<60){
+          if (this.state.sessionLength < 60) {
             this.setState({ sessionLength: this.state.sessionLength + 1 })
           }
-          else{
+          else {
             //alert("Sorry, Session Length cannot be greater than sixty!")
           }
           break
         case 'session-decrement':
-          if(this.state.sessionLength>1){
+          if (this.state.sessionLength > 1) {
             this.setState({ sessionLength: this.state.sessionLength - 1 })
           }
-          else{
+          else {
             //alert("Sorry, Session Length cannot be zero!")
           }
           break
@@ -96,87 +97,102 @@ class Clock extends React.Component{
     }
   }
 
-  timerSetting(){
-    this.interval = setInterval(()=>{
-      if(this.state.isReset){
+  timerSetting() {
+    this.interval = setInterval(() => {
+      if (this.state.isReset) {
 
       }
-      else{
-        if(this.state.onPlay){
-          if(this.state.seconds===0){
-            if(this.state.minutes===0){
-              if(this.state.onBreak){
-                this.setState((state=>({
+      else {
+        if (this.state.onPlay) {
+          if (this.state.seconds === 0) {
+            if (this.state.minutes === 0) {
+              if (this.state.onBreak) {
+                this.setState((state => ({
                   minutes: state.sessionLength,
                   onBreak: false
                 })))
               }
-              else{
-                this.setState((state)=>({
+              else {
+                this.setState((state) => ({
                   minutes: state.breakLength,
                   onBreak: true
                 }))
               }
             }
-            
-            else{
-              this.setState((state)=>({minutes: state.minutes - 1, seconds: 59}))
+
+            else {
+              this.setState((state) => ({ minutes: state.minutes - 1, seconds: 59 }))
             }
           }
-          else{
-            this.setState((state)=>({seconds: state.seconds - 1}))
+          else {
+            this.setState((state) => ({ seconds: state.seconds - 1 }))
           }
         }
-        else{
+        else {
 
         }
       }
     }, 1000);
   }
 
-  componentDidUpdate(_prevProp,prevState){
-    if(this.state.sessionLength !== prevState.sessionLength){
-      this.setState((state)=>({minutes: state.sessionLength}))
+  componentDidUpdate(_prevProp, prevState) {
+    if (this.state.sessionLength !== prevState.sessionLength) {
+      this.setState((state) => ({ minutes: state.sessionLength }))
     }
-    if(this.state.seconds !== prevState.seconds || this.state.minutes !== prevState.minutes){
+    if (this.state.seconds !== prevState.seconds || this.state.minutes !== prevState.minutes) {
       this.setTimeTemplate()
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.timerSetting()
   }
 
   componentWillUnmount() {
-    clearInterval(this.timerID);
+    clearInterval(this.interval);
   }
 
-  render(){
+  onReset() {
+    this.setState(() => ({
+      sessionLength: 25,
+      breakLength: 5,
+      minutes: 25,
+      seconds: 0,
+      minutesDummy: '25',
+      secondsDummy: '00',
+      onPlay: false,
+      isReset: true,
+      onBreak: false
+    }))
+    this.setTimeTemplate()
+  }
+
+  render() {
     let status
-    if(this.state.onBreak){
+    if (this.state.onBreak) {
       status = 'Break'
     }
-    else{
+    else {
       status = 'Session'
     }
     let playpauseButton
-    let resetButton = <div id="reset" onClick={()=>{this.setState({onPlay: false, isReset: true, seconds: 0, minutes: 25, breakLength: 5, sessionLength: 25})}}>⟳</div>
-    if(this.state.isReset){
-      playpauseButton = <div onClick={()=>{this.setState({isReset: false, onPlay: true})}} id="start_stop">▶</div>
+    let resetButton = <div id="reset" onClick={this.onReset}>⟳</div>
+    if (this.state.isReset) {
+      playpauseButton = <div onClick={() => { this.setState({ isReset: false, onPlay: true }) }} id="start_stop">▶</div>
     }
-    else{
-      if(this.state.onPlay){
-        playpauseButton = <div onClick={()=>{this.setState({onPlay: false})}} id="start_stop">❚❚</div>
+    else {
+      if (this.state.onPlay) {
+        playpauseButton = <div onClick={() => { this.setState({ onPlay: false }) }} id="start_stop">❚❚</div>
       }
-      else{
-        playpauseButton = <div onClick={()=>{this.setState({onPlay: true})}} id="start_stop">▶</div>
+      else {
+        playpauseButton = <div onClick={() => { this.setState({ onPlay: true }) }} id="start_stop">▶</div>
       }
     }
 
-    return(
+    return (
       <div id="bigContainer">
         <div id="title">Pomodoro Clock</div>
-        <div id="topContainer"  className="unselectable">
+        <div id="topContainer" className="unselectable">
           <div className="flex-row">
             <div id="break-label">Break Length:</div>
             <div className="adjustArrows">

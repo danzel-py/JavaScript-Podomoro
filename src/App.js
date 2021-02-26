@@ -1,25 +1,217 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="outer">
+      <div className="middle">
+        <div className="inner">
+          <Clock/>
+        </div>
+      </div>
     </div>
   );
 }
+
+class Clock extends React.Component{
+  constructor(props){
+    super(props)
+    this.state = {
+      sessionLength: 25,
+      breakLength: 5,
+      minutes: 25,
+      seconds: 0,
+      minutesDummy: '25',
+      secondsDummy: '00',
+      onPlay: false,
+      isReset: true,
+      onBreak: false 
+    }
+    this.updateLength = this.updateLength.bind(this)
+    this.timerSetting = this.timerSetting.bind(this)
+    this.setTimeTemplate = this.setTimeTemplate.bind(this)
+  }
+
+  setTimeTemplate(){
+    if(this.state.minutes < 10){
+      this.setState((state)=>({
+        minutesDummy: `0${state.minutes}`
+      }))
+    }
+    else{
+      this.setState((state)=>({
+        minutesDummy: `${state.minutes}`
+      }))
+    }
+    if(this.state.seconds < 0){
+      this.setState((state)=>({
+        secondsDummy: `0${state.seconds}`
+      }))
+    }
+    else{
+      this.setState((state)=>({
+        secondsDummy: `${state.seconds}`
+      }))
+    }
+  }
+
+  updateLength(id){
+    if(this.state.isReset){
+      switch(id){
+        case 'break-increment':
+          if(this.state.breakLength<60){
+            this.setState({ breakLength: this.state.breakLength + 1 })
+          }
+          else{
+            //alert("Sorry, Break Length cannot be greater than sixty!")
+          }
+          break
+        case 'break-decrement':
+          if(this.state.breakLength>1){
+            this.setState({ breakLength: this.state.breakLength - 1 })
+          }
+          else{
+            //alert("Sorry, Break Length cannot be zero!")
+          }
+          break
+        case 'session-increment':
+          if(this.state.sessionLength<60){
+            this.setState({ sessionLength: this.state.sessionLength + 1 })
+          }
+          else{
+            //alert("Sorry, Session Length cannot be greater than sixty!")
+          }
+          break
+        case 'session-decrement':
+          if(this.state.sessionLength>1){
+            this.setState({ sessionLength: this.state.sessionLength - 1 })
+          }
+          else{
+            //alert("Sorry, Session Length cannot be zero!")
+          }
+          break
+        default:
+          break
+      }
+    }
+  }
+
+  timerSetting(){
+    this.interval = setInterval(()=>{
+      if(this.state.isReset){
+
+      }
+      else{
+        if(this.state.onPlay){
+          if(this.state.seconds===0){
+            if(this.state.minutes===0){
+              if(this.state.onBreak){
+                this.setState((state=>({
+                  minutes: state.sessionLength,
+                  onBreak: false
+                })))
+              }
+              else{
+                this.setState((state)=>({
+                  minutes: state.breakLength,
+                  onBreak: true
+                }))
+              }
+            }
+            
+            else{
+              this.setState((state)=>({minutes: state.minutes - 1, seconds: 59}))
+            }
+          }
+          else{
+            this.setState((state)=>({seconds: state.seconds - 1}))
+          }
+        }
+        else{
+
+        }
+      }
+    }, 1000);
+  }
+
+  componentDidUpdate(_prevProp,prevState){
+    if(this.state.sessionLength !== prevState.sessionLength){
+      this.setState((state)=>({minutes: state.sessionLength}))
+    }
+    if(this.state.seconds !== prevState.seconds || this.state.minutes !== prevState.minutes){
+      this.setTimeTemplate()
+    }
+  }
+
+  componentDidMount(){
+    this.timerSetting()
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  render(){
+    let status
+    if(this.state.onBreak){
+      status = 'Break'
+    }
+    else{
+      status = 'Session'
+    }
+    let playpauseButton
+    let resetButton = <div id="reset" onClick={()=>{this.setState({onPlay: false, isReset: true, seconds: 0, minutes: 25, breakLength: 5, sessionLength: 25})}}>⟳</div>
+    if(this.state.isReset){
+      playpauseButton = <div onClick={()=>{this.setState({isReset: false, onPlay: true})}} id="start_stop">▶</div>
+    }
+    else{
+      if(this.state.onPlay){
+        playpauseButton = <div onClick={()=>{this.setState({onPlay: false})}} id="start_stop">❚❚</div>
+      }
+      else{
+        playpauseButton = <div onClick={()=>{this.setState({onPlay: true})}} id="start_stop">▶</div>
+      }
+    }
+
+    return(
+      <div id="bigContainer">
+        <div id="title">Pomodoro Clock</div>
+        <div id="topContainer"  className="unselectable">
+          <div className="flex-row">
+            <div id="break-label">Break Length:</div>
+            <div className="adjustArrows">
+              <div id="break-increment" onClick={() => this.updateLength('break-increment')}>▲</div>
+              <div id="break-length">{this.state.breakLength}</div>
+              <div id="break-decrement" onClick={() => this.updateLength('break-decrement')}>▼</div>
+            </div>
+            <div className="minute-label"> min.</div>
+          </div>
+          <div className="flex-row">
+            <div id="session-label">Session Length:</div>
+            <div className="adjustArrows">
+              <div id="session-increment" onClick={() => this.updateLength('session-increment')}>▲</div>
+              <div id="session-length">{this.state.sessionLength}</div>
+              <div id="session-decrement" onClick={() => this.updateLength('session-decrement')}>▼</div>
+            </div>
+            <div className="minute-label">min.</div>
+          </div>
+        </div>
+        <div id="midContainer">
+          <div id="timer-label">{status}</div>
+          <div id="time-left" className="flex-row">
+            {this.state.minutesDummy}:{this.state.secondsDummy}
+          </div>
+        </div>
+        <div id="botContainer" className="unselectable">
+          {playpauseButton}
+          {resetButton}
+        </div>
+      </div>
+    )
+  }
+}
+
+
+
 
 export default App;

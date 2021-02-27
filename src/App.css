@@ -24,10 +24,9 @@ body{
 
 #bigContainer{
   background-color: aliceblue;
-  width: 90%;
+  width: 100%;
   max-width: 36rem;
-  max-height: 40vh;
-  min-height: 25rem;
+  height: 25rem;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -36,38 +35,34 @@ body{
 #title{
   background-color: aquamarine;
   text-align: center;
-  font-size: 2rem;
-  line-height: 4rem;
+  font-size: 3.2rem;
+  line-height: 5rem;
+  margin-bottom: 1rem;
 }
 
 #topContainer{
-  background-color: greenyellow;
-  height: 2rem;
+    height: 2rem;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
 }
 
 #midContainer{
-  background-color:salmon;
-  margin: auto;
+  margin:  2rem auto;
   width: 80%;
   height: 40%;
 }
 
 #break-label{
-  background-color: crimson;
   line-height: 2rem;
 }
 
 #session-label{
-  background-color: cyan;
   line-height: 2rem;
 }
 
 
 .flex-row{
-  background-color: brown;
   display: flex;
   flex-direction: row;
 
@@ -76,6 +71,32 @@ body{
 .minute-label{
   line-height: 2rem;
   margin-left: 0.2rem;
+}
+
+#timer-label{
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+#time-left{
+  font-size: 4rem;
+  line-height: 8rem;
+  justify-content: center;
+}
+
+#botContainer{
+  font-size: 1.5rem;
+  justify-content: center;
+}
+
+#ppButton{
+  font-size: 2rem;
+  margin-right: 1rem;
+}
+
+#creditContainer{
+  font-size: 0.5rem;
+  margin-top: 2rem;
 }
 
 .adjustArrows{

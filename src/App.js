@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import alarmMp3 from './Tururururu 5 seconds.mp3'
 
 function App() {
   return (
@@ -31,6 +32,21 @@ class Clock extends React.Component {
     this.timerSetting = this.timerSetting.bind(this)
     this.setTimeTemplate = this.setTimeTemplate.bind(this)
     this.onReset = this.onReset.bind(this)
+    this.setAlarm = this.setAlarm.bind(this)
+  }
+
+  setAlarm(){
+    if(this.state.isReset){
+      document.getElementById('beep').load()
+    }
+    
+    else{
+      if(this.state.seconds === 0 && this.state.minutes === 0){
+        document.getElementById('beep').load()
+        document.getElementById('beep').play()
+      }
+    }
+  
   }
 
   setTimeTemplate() {
@@ -141,6 +157,7 @@ class Clock extends React.Component {
     }
     if (this.state.seconds !== prevState.seconds || this.state.minutes !== prevState.minutes) {
       this.setTimeTemplate()
+      this.setAlarm()
     }
   }
 
@@ -165,6 +182,7 @@ class Clock extends React.Component {
       onBreak: false
     }))
     this.setTimeTemplate()
+    this.setAlarm()
   }
 
   render() {
@@ -217,11 +235,17 @@ class Clock extends React.Component {
           <div id="time-left" className="flex-row">
             {this.state.minutesDummy}:{this.state.secondsDummy}
           </div>
+          <div id="botContainer" className="unselectable flex-row">
+          <div id="ppButton">{playpauseButton}</div>
+          <div id="resetButton">{resetButton}</div>
+          </div>
         </div>
-        <div id="botContainer" className="unselectable">
-          {playpauseButton}
-          {resetButton}
+        <div id="audioContainer">
+          <audio id="beep" src={alarmMp3}></audio>
         </div>
+        <div id='creditContainer'>
+      Created on <a href="https://www.reactjs.org">ReactJS</a> by <a href="https://github.com/danzel-py">danzel-py</a>
+      </div>
       </div>
     )
   }

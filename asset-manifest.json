@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/JavaScript-Pomodoro/static/css/main.478f8883.chunk.css",
+    "main.js": "/JavaScript-Pomodoro/static/js/main.b595f88e.chunk.js",
+    "main.js.map": "/JavaScript-Pomodoro/static/js/main.b595f88e.chunk.js.map",
+    "runtime-main.js": "/JavaScript-Pomodoro/static/js/runtime-main.58a8f292.js",
+    "runtime-main.js.map": "/JavaScript-Pomodoro/static/js/runtime-main.58a8f292.js.map",
+    "static/js/2.b6da39b4.chunk.js": "/JavaScript-Pomodoro/static/js/2.b6da39b4.chunk.js",
+    "static/js/2.b6da39b4.chunk.js.map": "/JavaScript-Pomodoro/static/js/2.b6da39b4.chunk.js.map",
+    "static/js/3.e1de7890.chunk.js": "/JavaScript-Pomodoro/static/js/3.e1de7890.chunk.js",
+    "static/js/3.e1de7890.chunk.js.map": "/JavaScript-Pomodoro/static/js/3.e1de7890.chunk.js.map",
+    "index.html": "/JavaScript-Pomodoro/index.html",
+    "static/css/main.478f8883.chunk.css.map": "/JavaScript-Pomodoro/static/css/main.478f8883.chunk.css.map",
+    "static/js/2.b6da39b4.chunk.js.LICENSE.txt": "/JavaScript-Pomodoro/static/js/2.b6da39b4.chunk.js.LICENSE.txt",
+    "static/media/Tururururu 5 seconds.b8da8c4e.mp3": "/JavaScript-Pomodoro/static/media/Tururururu 5 seconds.b8da8c4e.mp3"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.58a8f292.js",
+    "static/js/2.b6da39b4.chunk.js",
+    "static/css/main.478f8883.chunk.css",
+    "static/js/main.b595f88e.chunk.js"
+  ]
+}
